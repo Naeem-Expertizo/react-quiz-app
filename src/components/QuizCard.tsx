@@ -1,7 +1,7 @@
 "use client";
 import React from 'react';
 import { Question } from '@/app/quiz/page';
-import { useDispatch} from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { incrementCorrect, incrementIncorrect, resetScores } from '@/store/quizSlice';
 // import { RootState } from '@/store/store';
 import { useRouter } from 'next/navigation';
@@ -70,7 +70,7 @@ const QuizCard = ({
     router.push("/");
     setNumberOfCorrectAnswers(0);
     setNumberOfIncorrectAnswers(0);
-    resetScores();
+    dispatch(resetScores());
     setNumberOfMaxScore(100);
   }
 
@@ -92,8 +92,8 @@ const QuizCard = ({
             key={index}
             className={`px-4 py-3 border rounded-lg transition-colors cursor-pointer
               ${selectedAnswer === answer
-                ? 'bg-blue-500 text-white border-blue-500'
-                : 'bg-white border-gray-300 hover:bg-gray-50'}`}
+                ? 'bg-blue-500 text-white border-blue-500' : (selectedAnswer && correctAnswer === answer) ? "border-green-500"
+                  : 'bg-white border-gray-300 hover:bg-gray-50'}`}
             onClick={() => handleAnswerSelect(answer)}
             disabled={selectedAnswer !== null}
           >

@@ -31,8 +31,6 @@ const Page = () => {
   const [numberOfCorrectAnswers, setNumberOfCorrectAnswers] = useState(0);
   const [numberOfMaxScore, setNumberOfMaxScore] = useState(100);
 
-  console.log(numberOfMaxScore)
-
   const allQuestions: Question[] = [
     {
       "category": "Entertainment%3A%20Video%20Games",

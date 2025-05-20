@@ -1,9 +1,10 @@
 "use client";
 import React from 'react';
 import { Question } from '@/app/quiz/page';
-import { useDispatch, useSelector } from 'react-redux';
-import { incrementCorrect, incrementIncorrect } from '@/store/quizSlice';
-import { RootState } from '@/store/store';
+import { useDispatch} from 'react-redux';
+import { incrementCorrect, incrementIncorrect, resetScores } from '@/store/quizSlice';
+// import { RootState } from '@/store/store';
+import { useRouter } from 'next/navigation';
 
 
 type QuizCardProps = {
@@ -21,6 +22,7 @@ type QuizCardProps = {
   isLastQuestion: boolean;
   isSelectedQuestionIsCorrect: boolean;
   numberOfIncorrectAnswers: number;
+  shuffledAnswers: string[];
 };
 
 const QuizCard = ({
@@ -36,16 +38,13 @@ const QuizCard = ({
   setIsSelectedQuestionIsCorrect,
   setNumberOfIncorrectAnswers,
   setNumberOfMaxScore,
-  // numberOfIncorrectAnswers,
+  shuffledAnswers,
   setNumberOfCorrectAnswers
 }: QuizCardProps) => {
-  // Combine and shuffle answers
-  const allAnswers = [...question.incorrect_answers, question.correct_answer];
-  const shuffledAnswers = [...allAnswers].sort(() => Math.random() - 0.5);
   const correctAnswer = question.correct_answer;
 
   const dispatch = useDispatch();
-  const { incorrectAnswers } = useSelector((state: RootState) => state.quiz);
+  // const { incorrectAnswers } = useSelector((state: RootState) => state.quiz);
 
   // Difficulty display
   const difficultyStars =
@@ -57,16 +56,22 @@ const QuizCard = ({
     onAnswerSelect(answer);
     setIsSelectedQuestionIsCorrect(answer === correctAnswer);
     if (answer !== correctAnswer) {
-      setNumberOfIncorrectAnswers((prev: number) => prev + 1);
-      const maxScore = ((20 - incorrectAnswers ) / 20) * 100;
-
-      console.log(maxScore)
-      setNumberOfMaxScore(maxScore);
+      setNumberOfIncorrectAnswers(prev => prev + 1);
+      setNumberOfMaxScore(prev => Math.max(prev - 5, 0));
       dispatch(incrementIncorrect());
     } else {
       dispatch(incrementCorrect());
       setNumberOfCorrectAnswers((prev: number) => prev + 5);
     }
+  }
+
+  const router = useRouter()
+  const handleFinishQuiz = () => {
+    router.push("/");
+    setNumberOfCorrectAnswers(0);
+    setNumberOfIncorrectAnswers(0);
+    resetScores();
+    setNumberOfMaxScore(100);
   }
 
   return (
@@ -108,7 +113,7 @@ const QuizCard = ({
       {showNextButton && (
         <button
           className='px-6 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors'
-          onClick={onNextQuestion}
+          onClick={!isLastQuestion ? onNextQuestion : handleFinishQuiz}
         >
           {isLastQuestion ? 'Finish Quiz' : 'Next Question'}
         </button>

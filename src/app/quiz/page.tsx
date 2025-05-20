@@ -233,6 +233,13 @@ const Page = () => {
   const isLastQuestion = currentQuestionIndex === decodedQuestions.length - 1;
   const [isSelectedQuestionIsCorrect, setIsSelectedQuestionIsCorrect] = useState(false);
 
+  // Combine and shuffle answers
+  const shuffledAnswers = React.useMemo(() => {
+    const allAnswers = [...currentQuestion.incorrect_answers, currentQuestion.correct_answer];
+    return [...allAnswers].sort(() => Math.random() - 0.5);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [currentQuestion?.question]);
+
   const handleAnswerSelect = (answer: string) => {
     setSelectedAnswer(answer);
     setShowNextButton(true);
@@ -248,11 +255,11 @@ const Page = () => {
   const { correctAnswers, incorrectAnswers } = useSelector((state: RootState) => state.quiz);
 
   return (
-    <div>
+    <div className="relative h-screen flex flex-col items-center justify-center p-4">
 
-      <div className="w-full bg-gray-200 rounded-full h-4 mb-8">
+      <div className="absolute top-0 w-full bg-gray-200 h-4 mb-8">
         <div
-          className="bg-blue-500 h-4 rounded-full transition-all duration-300"
+          className="bg-blue-500 h-4 transition-all duration-300"
           style={{ width: `${((currentQuestionIndex) / decodedQuestions.length) * 100}%` }}
         ></div>
       </div>
@@ -272,27 +279,28 @@ const Page = () => {
         setNumberOfIncorrectAnswers={setNumberOfIncorrectAnswers}
         setNumberOfCorrectAnswers={setNumberOfCorrectAnswers}
         setNumberOfMaxScore={setNumberOfMaxScore}
+        shuffledAnswers={shuffledAnswers}
       />
 
-      <div className=' absolute bottom-0 w-full'>
-        <div className='flex justify-between mb-4'>
+      <div className='absolute bottom-0 w-full'>
+        <div className='flex justify-between mb-4 px-4'>
           <span>{numberOfCorrectAnswers}%</span>
-          <span>{numberOfMaxScore}%</span>
+          <span>{Math.round(numberOfMaxScore)}%</span>
         </div>
 
-        <div className="w-full bg-white rounded-full h-4 mb-8 border border-black relative">
+        <div className="w-full bg-white h-4 relative">
           <div
-            className={`bg-gray-200 h-4 rounded-full transition-all duration-300 absolute top-0 z-10`}
+            className={`bg-gray-200 h-4 transition-all duration-300 absolute top-0 z-10`}
             style={{ width: `${numberOfMaxScore}%` }}
           >
           </div>
           <div
-            className="bg-gray-400 h-4 rounded-full transition-all duration-300 w-[95%] absolute top-0 z-20"
-            style={{ width: `${(correctAnswers / (correctAnswers + incorrectAnswers)) * 100}%` }}
+            className="bg-gray-400 h-4 transition-all duration-300 w-[95%] absolute top-0 z-20"
+            style={{ width: `${correctAnswers !== 0 ? (correctAnswers / (correctAnswers + incorrectAnswers)) * 100 : 0}%` }}
           >
           </div>
           <div
-            className="bg-gray-800 h-4 rounded-full transition-all duration-300 absolute top-0 z-30"
+            className="bg-gray-800 h-4 transition-all duration-300 absolute top-0 z-30"
             style={{ width: `${correctAnswers}%` }}
           ></div>
         </div>

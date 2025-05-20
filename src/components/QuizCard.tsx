@@ -90,7 +90,7 @@ const QuizCard = ({
         {shuffledAnswers.map((answer, index) => (
           <button
             key={index}
-            className={`px-4 py-3 border rounded-lg transition-colors
+            className={`px-4 py-3 border rounded-lg transition-colors cursor-pointer
               ${selectedAnswer === answer
                 ? 'bg-blue-500 text-white border-blue-500'
                 : 'bg-white border-gray-300 hover:bg-gray-50'}`}
@@ -112,7 +112,7 @@ const QuizCard = ({
 
       {showNextButton && (
         <button
-          className='px-6 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors'
+          className='px-6 py-3 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors cursor-pointer'
           onClick={!isLastQuestion ? onNextQuestion : handleFinishQuiz}
         >
           {isLastQuestion ? 'Finish Quiz' : 'Next Question'}

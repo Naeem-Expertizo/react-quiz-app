@@ -287,19 +287,22 @@ const Page = () => {
         </div>
 
         <div className="w-full bg-white h-4 relative">
+          {/* main max score bar */}
           <div
             className={`bg-gray-200 h-4 transition-all duration-300 absolute top-0 z-10`}
             style={{ width: `${numberOfMaxScore}%` }}
           >
           </div>
+          {/* number of correct answer according to completed question */}
           <div
             className="bg-gray-400 h-4 transition-all duration-300 w-[95%] absolute top-0 z-20"
             style={{ width: `${correctAnswers !== 0 ? (correctAnswers / (correctAnswers + incorrectAnswers)) * 100 : 0}%` }}
           >
           </div>
+          {/* current score */}
           <div
             className="bg-gray-800 h-4 transition-all duration-300 absolute top-0 z-30"
-            style={{ width: `${correctAnswers}%` }}
+            style={{ width: `${correctAnswers * 5}%` }}
           ></div>
         </div>
       </div>

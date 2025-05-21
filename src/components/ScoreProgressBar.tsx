@@ -6,7 +6,7 @@ const ScoreProgressBar = ({ noOfCorrectOrIncorrectAnswers, numberOfMaxScore, cor
   // calculation of number of correct answer according to completed question
   const completedCorrectQuestions = correctAnswers !== 0 ? (correctAnswers / (correctAnswers + incorrectAnswers)) * 100 : 0;
   return (
-    <div className='xs:w-[100%] sm:w-[100%] md:w-[90%] mx-auto'>
+    <div className=' w-full mx-auto'>
       {/* score board */}
       <div className='flex justify-between mb-1 font-semibold'>
         <span>Score: {noOfCorrectOrIncorrectAnswers?.correct}%</span>

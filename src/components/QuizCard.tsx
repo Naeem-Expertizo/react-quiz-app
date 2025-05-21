@@ -83,7 +83,7 @@ const QuizCard = ({
   }
 
   return (
-    <div className='relative flex flex-col justify-between md:w-2xl max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-gray-400 shadow-2xl  h-[80vh] overflow-y-auto'>
+    <div className='relative flex flex-col justify-between gap-8 md:w-2xl max-w-2xl mx-auto bg-white p-8 rounded-lg shadow-gray-400 shadow-2xl  h-[80vh] overflow-y-auto'>
       {!showResult && <div className='flex flex-col gap-4'>
         <div className='mb-4'>
           <h2 className='text-3xl font-semibold text-gray-700'>Question {currentQuestionNumber} of {totalQuestions}</h2>
@@ -123,8 +123,9 @@ const QuizCard = ({
 
       {/* show result */}
       {showResult && <div className='flex flex-col gap-4 items-center my-auto'>
-        <h2 className='text-3xl font-semibold text-gray-700'>Quiz Completed!</h2>
-        <p className='text-gray-600'>You answered {correctAnswers} out of {totalQuestions} questions correctly.</p>
+        <h2 className='text-5xl font-semibold text-gray-700'>Quiz Completed!</h2>
+        <p className='text-gray-600 font-semibold text-2xl'>You answered {correctAnswers} out of {totalQuestions} questions correctly.</p>
+        <p className={`text-xl ${(correctAnswers * 5) > 65 ? "text-green-500" : "text-red-500"}`}>{(correctAnswers * 5) > 65 ? "Congratulations! You are Passed ✨✨✨" : "Sorry! You are Failed. Better luck next time 😊"}</p>
         <div className='flex flex-col items-center gap-8'>
           <Button title="Finish Quiz" onClick={handleFinishQuiz} />
         </div>

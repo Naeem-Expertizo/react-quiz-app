@@ -8,7 +8,6 @@ import { Question } from '@/types/quizPage';
 import React, { useState } from 'react';
 import { useSelector } from 'react-redux';
 
-// function to decode the URL-encoded strings in the questions
 const decodeQuestions = (questions: Question[]): Question[] => {
   return questions?.map(q => ({
     ...q,
@@ -20,10 +19,8 @@ const decodeQuestions = (questions: Question[]): Question[] => {
 };
 
 const Page = () => {
-  // Decode the questions
   const decodedQuestions = decodeQuestions(allQuestions);
 
-  // ========= all states here ===========
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState<string | null>(null);
   const [showNextButton, setShowNextButton] = useState(false);
@@ -33,27 +30,23 @@ const Page = () => {
   });
   const [numberOfMaxScore, setNumberOfMaxScore] = useState(100);
   const [isSelectedCorrect, setIsSelectedCorrect] = useState(false);
-  // ========== all states here ===========
-  // Redux states
+
   const { correctAnswers, incorrectAnswers } = useSelector((state: RootState) => state.quiz);
 
   const isLastQuestion = currentQuestionIndex === decodedQuestions?.length - 1;
   const currentQuestion = decodedQuestions[currentQuestionIndex];
 
-  // Combine and shuffle answers
   const shuffledAnswers = React.useMemo(() => {
     const allAnswers = [...currentQuestion?.incorrect_answers, currentQuestion?.correct_answer];
     return [...allAnswers]?.sort(() => Math.random() - 0.5);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentQuestion?.question]);
 
-  // Handle answer selection
   const handleAnswerSelect = (answer: string) => {
     setSelectedAnswer(answer);
     setShowNextButton(true);
   };
 
-  // Handle next question
   const handleNextQuestion = () => {
     setCurrentQuestionIndex(prev => prev + 1);
     setSelectedAnswer(null);
@@ -64,10 +57,8 @@ const Page = () => {
   return (
     <div className="relative h-screen flex flex-col items-center justify-center p-4">
 
-      {/* component of question progress bar */}
       <QuestionProgressBar currentQuestionIndex={currentQuestionIndex} decodedQuestions={decodedQuestions} />
 
-      {/* component of quiz card */}
       <QuizCard
         question={currentQuestion}
         currentQuestionNumber={currentQuestionIndex + 1}
@@ -83,8 +74,8 @@ const Page = () => {
         setNumberOfMaxScore={setNumberOfMaxScore}
         shuffledAnswers={shuffledAnswers}
         noOfCorrectOrIncorrectAnswers={noOfCorrectOrIncorrectAnswers}
-        numberOfMaxScore={numberOfMaxScore} 
-        correctAnswers={correctAnswers} 
+        numberOfMaxScore={numberOfMaxScore}
+        correctAnswers={correctAnswers}
         incorrectAnswers={incorrectAnswers}
       />
     </div>

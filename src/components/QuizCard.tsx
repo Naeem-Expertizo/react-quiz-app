@@ -29,24 +29,18 @@ const QuizCard = ({
   incorrectAnswers
 }: QuizCardProps) => {
 
-  // show result
-  const [showResult, setShowResult] = React.useState(false);
+        const [showResult, setShowResult] = React.useState(false);
 
-  // Router for navigation
-  const router = useRouter()
-  // Redux dispatch
+    const router = useRouter()
   const dispatch = useDispatch();
 
-  // Difficulty display
   const difficultyStars =
     question?.difficulty === "easy" ? <IoMdStar /> :
       question?.difficulty === "medium" ? <div className='flex gap-[2px]'><IoMdStar /> <IoMdStar /></div> :
         <div className='flex gap-[2px]'><IoMdStar /> <IoMdStar /> <IoMdStar /></div>;
 
-  // store the correct answer in a variable
   const correctAnswer = question?.correct_answer;
 
-  // Handle answer selection
   const handleAnswerSelect = (answer: string) => {
     onAnswerSelect(answer);
     setIsSelectedCorrect(answer === correctAnswer);
@@ -67,7 +61,6 @@ const QuizCard = ({
     }
   }
 
-  // Handle finish quiz
   const handleFinishQuiz = () => {
     router.push("/");
     setNoOfCorrectOrIncorrectAnswers({
@@ -118,10 +111,8 @@ const QuizCard = ({
         </div>
       </div>}
 
-      {/* component of botton score board with multiple bars */}
       {!showResult && <ScoreProgressBar noOfCorrectOrIncorrectAnswers={noOfCorrectOrIncorrectAnswers} numberOfMaxScore={numberOfMaxScore} correctAnswers={correctAnswers} incorrectAnswers={incorrectAnswers} />}
 
-      {/* show result */}
       {showResult && <div className='flex flex-col gap-4 items-center my-auto'>
         <h2 className='text-5xl font-semibold text-gray-700'>Quiz Completed!</h2>
         <p className='text-gray-600 font-semibold text-2xl'>You answered {correctAnswers} out of {totalQuestions} questions correctly.</p>
